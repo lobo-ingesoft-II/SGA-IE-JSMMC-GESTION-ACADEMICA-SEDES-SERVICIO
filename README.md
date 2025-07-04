@@ -242,9 +242,7 @@ pytest app/test/test_sedes.py
 
 ---
 
-## Contacto
 
-Para dudas o sugerencias, contacta al equipo de Desarrollo de Software II.
 
 ```
 ```
