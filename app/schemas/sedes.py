@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class SedeBase(BaseModel):
     nombre: str
@@ -6,8 +6,11 @@ class SedeBase(BaseModel):
 class SedeCreate(SedeBase):
     pass
 
+class SedeUpdate(SedeBase):
+    pass
+
 class SedeResponse(SedeBase):
     id_sede: int
 
-    class Config:
-        orm_mode = True
+    # Pydantic V2: usar ConfigDict en lugar de class Config
+    model_config = ConfigDict(from_attributes=True)
