@@ -1,16 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.sedes import SedeCreate, SedeResponse
+from app.schemas.sedes import SedeCreate, SedeResponse, SedeUpdate
 from app.services.sedes import (
-    create_sede,
-    get_sede,
-    list_sedes_by_profesor,
-    get_profesor_id_by_usuario
+    create_sede, get_sede, list_sedes,
+    update_sede, delete_sede
 )
 from app.db import SessionLocal
-from app.dependencies.auth_dependency import get_current_user, TokenData
 
-router = APIRouter()
+
+router = APIRouter(tags=["Sedes"])
 
 def get_db():
     db = SessionLocal()
@@ -23,6 +21,10 @@ def get_db():
 def create(sede: SedeCreate, db: Session = Depends(get_db)):
     return create_sede(db, sede)
 
+@router.get("/", response_model=list[SedeResponse])
+def list_all_sedes(db: Session = Depends(get_db)):
+    return list_sedes(db)
+
 @router.get("/{id_sede}", response_model=SedeResponse)
 def get(id_sede: int, db: Session = Depends(get_db)):
     db_sede = get_sede(db, id_sede)
@@ -30,13 +32,23 @@ def get(id_sede: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Sede no encontrada")
     return db_sede
 
-@router.get("/", response_model=list[SedeResponse])
-def list_by_profesor(
-    db: Session = Depends(get_db),
-    current_user: TokenData = Depends(get_current_user)
+@router.put("/{id_sede}", response_model=SedeResponse)
+def update_sede_endpoint(
+    id_sede: int,
+    sede_data: SedeUpdate,
+    db: Session = Depends(get_db)
 ):
-    profesor_id = get_profesor_id_by_usuario(db, current_user.id)
-    if profesor_id is None:
-        raise HTTPException(status_code=404, detail="Profesor no encontrado")
-    
-    return list_sedes_by_profesor(db, profesor_id)
+    updated = update_sede(db, id_sede, sede_data)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Sede no encontrada")
+    return updated
+
+@router.delete("/{id_sede}", status_code=204)
+def delete_sede_endpoint(id_sede: int, db: Session = Depends(get_db)):
+    success = delete_sede(db, id_sede)
+    if not success:
+        raise HTTPException(status_code=404, detail="Sede no encontrada")
+    return
+
+
+

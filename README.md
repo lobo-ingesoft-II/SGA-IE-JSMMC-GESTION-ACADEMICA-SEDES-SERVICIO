@@ -1,14 +1,30 @@
+```markdown
 # Servicio de Sedes
 
 ## Descripción
 
-Este servicio permite gestionar las sedes del sistema académico. Proporciona funcionalidades para crear, obtener y listar sedes, facilitando su integración con otros módulos.
+Este servicio permite gestionar las sedes del sistema académico. Proporciona funcionalidades para crear, obtener, actualizar, listar y eliminar sedes, facilitando su integración con otros módulos.
 
 ## Endpoints
 
-### Registrar una sede
+Todas las rutas parten de la raíz `/sedes`.
 
-**POST** `/sedes/`
+| Método | Ruta                   | Descripción                        |
+| ------ | ---------------------- | ---------------------------------- |
+| POST   | `/sedes/`              | Crear una nueva sede               |
+| GET    | `/sedes/`              | Listar todas las sedes             |
+| GET    | `/sedes/{id_sede}`     | Obtener una sede por su ID         |
+| PUT    | `/sedes/{id_sede}`     | Actualizar el nombre de una sede   |
+| DELETE | `/sedes/{id_sede}`     | Eliminar una sede                  |
+
+### 1. Crear una sede
+
+```
+
+POST /sedes/
+Content-Type: application/json
+
+````
 
 #### Request Body
 
@@ -16,11 +32,11 @@ Este servicio permite gestionar las sedes del sistema académico. Proporciona fu
 {
   "nombre": "Sede Principal"
 }
-```
+````
 
 #### Response
 
-**Status:** 200 OK
+**200 OK**
 
 ```json
 {
@@ -29,36 +45,15 @@ Este servicio permite gestionar las sedes del sistema académico. Proporciona fu
 }
 ```
 
-### Obtener una sede por ID
+### 2. Listar sedes
 
-**GET** `/sedes/{id_sede}`
+```
+GET /sedes/
+```
 
 #### Response
 
-**Status:** 200 OK
-
-```json
-{
-  "id_sede": 1,
-  "nombre": "Sede Principal"
-}
-```
-
-**Status:** 404 Not Found
-
-```json
-{
-  "detail": "Sede not found"
-}
-```
-
-### Listar todas las sedes
-
-**GET** `/sedes/`
-
-#### Response
-
-**Status:** 200 OK
+**200 OK**
 
 ```json
 [
@@ -73,42 +68,183 @@ Este servicio permite gestionar las sedes del sistema académico. Proporciona fu
 ]
 ```
 
-## Instalación
+### 3. Obtener una sede por ID
 
-1. Asegúrate de tener el entorno configurado:
+```
+GET /sedes/{id_sede}
+```
+
+#### Response
+
+* **200 OK**
+
+  ```json
+  {
+    "id_sede": 1,
+    "nombre": "Sede Principal"
+  }
+  ```
+
+* **404 Not Found**
+
+  ```json
+  {
+    "detail": "Sede no encontrada"
+  }
+  ```
+
+### 4. Actualizar una sede
+
+```
+PUT /sedes/{id_sede}
+Content-Type: application/json
+```
+
+#### Request Body
+
+```json
+{
+  "nombre": "Sede Principal Actualizada"
+}
+```
+
+#### Response
+
+* **200 OK**
+
+  ```json
+  {
+    "id_sede": 1,
+    "nombre": "Sede Principal Actualizada"
+  }
+  ```
+
+* **404 Not Found**
+
+  ```json
+  {
+    "detail": "Sede no encontrada"
+  }
+  ```
+
+### 5. Eliminar una sede
+
+```
+DELETE /sedes/{id_sede}
+```
+
+#### Response
+
+* **204 No Content**
+
+* **404 Not Found**
+
+  ```json
+  {
+    "detail": "Sede no encontrada"
+  }
+  ```
+
+---
+
+## Instalación y arranque
+
+1. Clona el repositorio y ve a su carpeta raíz:
+
+   ```bash
+   git clone <url_del_repositorio>
+   cd SGA-IE-JSMMC-GESTION-ACADEMICA-SEDES-SERVICIO
+   ```
+
+2. Crea y activa un entorno virtual:
+
+   ```bash
+   python -m venv .venv
+   . .venv/Scripts/activate       # Windows
+   source .venv/bin/activate      # macOS / Linux
+   ```
+
+3. Instala dependencias:
 
    ```bash
    pip install -r requirements.txt
    ```
-2. Configura la base de datos en el archivo `.env`:
+
+4. Crea el archivo `.env` en la raíz (no lo subas a Git) con estas variables:
 
    ```env
-   DATABASE_URL="mysql+pymysql://user:password@host:port/database"
+   DATABASE_URL="mysql+pymysql://root:TU_CONTRASEÑA@127.0.0.1:3306/sedes_db"
+   SECRET_KEY="valor_aleatorio_32_caracteres_o_más"
+   DEBUG=True
+   CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
+   HOST="127.0.0.1"
+   PORT=8000
    ```
-3. Ejecuta el servidor:
+
+   > **Importante:** Genera tu `SECRET_KEY` con:
+   >
+   > ```bash
+   > python - <<'EOF'
+   > import secrets; print(secrets.token_urlsafe(32))
+   > EOF
+   > ```
+
+5. Inicializa la base de datos (requiere MySQL Workbench o CLI):
+
+   ```sql
+   SOURCE scripts/init_db.sql;
+   ```
+
+   (Opcional) Poblar datos de ejemplo:
+
+   ```sql
+   SOURCE scripts/seed_sedes.sql;
+   ```
+
+6. Arranca la aplicación:
 
    ```bash
-   uvicorn app.main:app --reload --port 8006
+   uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
    ```
+
+   o bien:
+
+   ```bash
+   python -m app.main
+   ```
+
+---
 
 ## Pruebas
 
-Para ejecutar las pruebas unitarias:
+Ejecuta las pruebas unitarias con pytest:
 
 ```bash
-pytest app/tests/test_sedes.py
+pytest app/test/test_sedes.py
 ```
 
-## Dependencias
-
-* **FastAPI**: Framework principal.
-* **SQLAlchemy**: ORM para manejar la base de datos.
-* **Pytest**: Framework para pruebas unitarias.
+---
 
 ## Documentación interactiva
 
-Accede a la documentación Swagger en [http://localhost:8007/docs](http://localhost:8007/docs) o ReDoc en [http://localhost:8007/redoc](http://localhost:8007/redoc).
+* **Swagger UI:**  `http://127.0.0.1:8000/docs`
+* **ReDoc:**         `http://127.0.0.1:8000/redoc`
+
+---
+
+## Dependencias principales
+
+* **FastAPI**: Framework web
+* **SQLAlchemy**: ORM
+* **Pydantic**: Validación de datos
+* **Pytest**: Pruebas unitarias
+* **python-jose**: JWT y criptografía (si se extiende en el futuro)
+
+---
 
 ## Contacto
 
-Para más información, cont
+Para dudas o sugerencias, contacta al equipo de Desarrollo de Software II.
+
+```
+```

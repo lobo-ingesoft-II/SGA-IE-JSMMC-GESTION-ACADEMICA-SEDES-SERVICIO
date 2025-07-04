@@ -1,29 +1,44 @@
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import sedes
+
+from app.config import settings
 from app.db import init_db, test_connection
+from app.routers import sedes
 
-app = FastAPI(title="Sedes API")
+# Logging básico
+logging.basicConfig(level=logging.INFO)
 
-# Habilitar CORS
-origins = [
-    "http://localhost:5173",  # ⚠️ Ajusta esto al origen real de tu frontend si es diferente
-    "http://localhost:3000",
-    "http://127.0.0.1:5173"
-]
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Antes de arrancar
+    init_db()
+    test_connection()
+    yield
+    # Aquí podrías hacer limpieza al apagar, si hace falta
+
+app = FastAPI(
+    title="Sedes API",
+    lifespan=lifespan
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Usa ["*"] solo temporalmente si es necesario
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def startup_event():
-    init_db()
-    test_connection()
-
-# Registrar rutas
 app.include_router(sedes.router, prefix="/sedes", tags=["Sedes"])
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "app.main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+    )
