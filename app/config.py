@@ -10,5 +10,9 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
     HOST: str = "127.0.0.1"
     PORT: int = 8000
+    
+    # Agrega la URL base de tu auth_api (puede venir de .env)
+    AUTH_API_URL: str
+    
 
 settings = Settings()
