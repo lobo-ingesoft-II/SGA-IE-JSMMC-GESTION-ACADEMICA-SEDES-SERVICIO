@@ -15,3 +15,10 @@
 - Servicio `assign_profesor_sede` y `get_sedes_by_profesor` con validación de `auth_api`.
 - Endpoint **POST** `/sedes/profesor_sede/` para asignar un profesor a una sede.
 - Endpoint **GET** `/sedes/por_profesor/{id_profesor}` para listar sedes asignadas a un profesor.
+
+## [1.2.0] - 2025-07-08
+### Agregado
+- Instrumentación Prometheus: contador de peticiones, histograma de latencia (buckets ajustados), contador de errores y endpoint `/metrics`.
+- Configuración de Prometheus (`prometheus.yml`) para scrapear el servicio de sedes.
+- Pruebas de integración para endpoints CRUD de sedes y rutas `profesor_sede`.
+- Script de generación de reporte PDF de resultados de pruebas.
