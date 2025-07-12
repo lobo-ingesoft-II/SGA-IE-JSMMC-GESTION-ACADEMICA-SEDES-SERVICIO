@@ -75,6 +75,3 @@ def sedes_por_profesor(
     db: Session = Depends(get_db)
 ):
     return get_sedes_by_profesor(db, id_profesor)
-
-
-

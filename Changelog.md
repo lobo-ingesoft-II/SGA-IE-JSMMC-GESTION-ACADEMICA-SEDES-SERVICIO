@@ -1,14 +1,5 @@
 # Changelog - Servicio de Sedes
 
-## [1.0.0] - 2025-06-09
-### Agregado
-- Creación del servicio de sedes.
-- Endpoint **POST** `/sedes/` para registrar una nueva sede.
-- Endpoint **GET** `/sedes/{id_sede}` para obtener una sede por ID.
-- Endpoint **GET** `/sedes/` para listar todas las sedes.
-- Integración de modelos, esquemas y servicios con SQLAlchemy y Pydantic.
-- Pruebas unitarias básicas para las operaciones CRUD de sedes.
-
 ## [1.1.0] - 2025-07-05
 ### Agregado
 - Modelo ORM `ProfesorSede` y esquemas Pydantic para la tabla intermedia `profesor_sede`.
@@ -22,3 +13,4 @@
 - Configuración de Prometheus (`prometheus.yml`) para scrapear el servicio de sedes.
 - Pruebas de integración para endpoints CRUD de sedes y rutas `profesor_sede`.
 - Script de generación de reporte PDF de resultados de pruebas.
+
