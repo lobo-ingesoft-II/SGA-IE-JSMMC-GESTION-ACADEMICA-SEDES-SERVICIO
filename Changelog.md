@@ -14,3 +14,7 @@
 - Pruebas de integración para endpoints CRUD de sedes y rutas `profesor_sede`.
 - Script de generación de reporte PDF de resultados de pruebas.
 
+
+## [1.2.1] - 2025-07-13
+### Agregado
+- Pruebas unitarias básicas con pytest y FastAPI TestClient para los endpoints de sedes y profesor-sede.
