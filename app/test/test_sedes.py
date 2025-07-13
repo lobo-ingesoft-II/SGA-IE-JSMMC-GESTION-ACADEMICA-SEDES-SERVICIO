@@ -1,5 +1,3 @@
-# app/test/test_sedes.py
-
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
