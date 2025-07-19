@@ -246,3 +246,69 @@ pytest app/test/test_sedes.py
 
 ```
 ```
+<<<<<<< Updated upstream
+=======
+
+````markdown
+## 🛠️ Configuración del entorno
+
+Antes de ejecutar la API, crea tu archivo de variables de entorno a partir del ejemplo:
+
+```bash
+cp .env.example .env
+````
+
+Abre `.env` y sustituye los placeholders por tus datos reales:
+
+```ini
+DATABASE_URL="mysql+pymysql://USER:PASSWORD@HOST:PORT/sedes_db"
+SECRET_KEY="TU_SECRET_KEY"
+DEBUG=True
+CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
+HOST="127.0.0.1"
+PORT=8007
+AUTH_API_URL="http://localhost:8000"
+```
+
+**Descripción de variables**
+
+* `DATABASE_URL`: cadena de conexión a MySQL (usuario, contraseña, host, puerto, nombre de la BD).
+* `SECRET_KEY`: clave secreta para la aplicación.
+* `DEBUG`: `True` para modo desarrollo (muestra SQL en consola).
+* `CORS_ORIGINS`: orígenes permitidos para CORS.
+* `HOST` y `PORT`: dirección y puerto donde correrá la API de sedes.
+* `AUTH_API_URL`: URL base de tu servicio de autenticación (por defecto `http://localhost:8000`).
+
+---
+
+## ▶️ Ejecutar la API en local
+
+1. Activa tu entorno virtual y asegúrate de tener las dependencias instaladas:
+
+   ```bash
+   source .venv/bin/activate      # UNIX/macOS
+   . .\.venv\Scripts\Activate.ps1 # Windows PowerShell
+   pip install -r requirements.txt
+   ```
+
+2. Inicia la aplicación:
+
+   ```bash
+   uvicorn app.main:app --reload --host ${HOST} --port ${PORT}
+   ```
+
+3. Accede a la documentación interactiva en tu navegador:
+
+   ```
+   http://127.0.0.1:8007/docs
+   ```
+
+```
+```
+
+CORRER PROYECTO 
+```Bash
+uvicorn app.main:app --reload --port 8007
+```
+
+>>>>>>> Stashed changes
