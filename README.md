@@ -338,8 +338,6 @@ pytest --maxfail=1 -q
 
 ```
 ```
-<<<<<<< Updated upstream
-=======
 
 ````markdown
 ## 🛠️ Configuración del entorno
@@ -403,4 +401,3 @@ CORRER PROYECTO
 uvicorn app.main:app --reload --port 8007
 ```
 
->>>>>>> Stashed changes

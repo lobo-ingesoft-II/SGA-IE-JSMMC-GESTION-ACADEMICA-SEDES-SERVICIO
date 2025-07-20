@@ -12,6 +12,9 @@ def create_sede(db: Session, sede: SedeCreate):
 def get_sede(db: Session, id_sede: int):
     return db.query(Sede).filter(Sede.id_sede == id_sede).first()
 
+def get_sede_by_name(db: Session, name: str):
+    return db.query(Sede).filter(Sede.nombre == name).first()
+
 def list_sedes(db: Session):
     return db.query(Sede).all()
 
