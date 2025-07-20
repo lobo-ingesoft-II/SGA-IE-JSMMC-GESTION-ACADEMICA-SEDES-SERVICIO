@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.schemas.sedes import SedeCreate, SedeResponse, SedeUpdate
 from app.services.sedes import (
     create_sede, get_sede, list_sedes,
-    update_sede, delete_sede
+    update_sede, delete_sede, get_sede_by_name
 )
 from app.db import SessionLocal
 
@@ -34,6 +34,14 @@ def get(id_sede: int, db: Session = Depends(get_db)):
     if not db_sede:
         raise HTTPException(status_code=404, detail="Sede no encontrada")
     return db_sede
+
+@router.get("/get_by_name/{name_sede}", response_model=SedeResponse)
+def get(name_sede: str, db: Session = Depends(get_db)):
+    db_sede = get_sede_by_name(db, name_sede)
+    if not db_sede:
+        raise HTTPException(status_code=404, detail="Sede no encontrada")
+    return db_sede
+
 
 @router.put("/{id_sede}", response_model=SedeResponse)
 def update_sede_endpoint(
