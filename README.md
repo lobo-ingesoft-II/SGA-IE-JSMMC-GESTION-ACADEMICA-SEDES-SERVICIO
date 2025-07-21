@@ -356,7 +356,7 @@ SECRET_KEY="TU_SECRET_KEY"
 DEBUG=True
 CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
 HOST="127.0.0.1"
-PORT=8007
+PORT=8000
 AUTH_API_URL="http://localhost:8000"
 ```
 
@@ -390,7 +390,7 @@ AUTH_API_URL="http://localhost:8000"
 3. Accede a la documentación interactiva en tu navegador:
 
    ```
-   http://127.0.0.1:8007/docs
+   http://127.0.0.1:8000/docs
    ```
 
 ```
@@ -398,6 +398,6 @@ AUTH_API_URL="http://localhost:8000"
 
 CORRER PROYECTO 
 ```Bash
-uvicorn app.main:app --reload --port 8007
+uvicorn app.main:app --reload --port 8000
 ```
 
