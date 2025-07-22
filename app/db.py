@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 # Crear el engine una sola vez, con echo en DEBUG
 engine = create_engine(
-    settings.BASE_DATOS_DOCKER,
+    settings.DATABASE_URL,
     pool_pre_ping=True,
     echo=settings.DEBUG
 )
