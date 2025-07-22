@@ -214,14 +214,106 @@ DELETE /sedes/{id_sede}
    ```
 
 ---
+## 📈 Observabilidad con Prometheus
+
+### Requisitos
+- API de sedes corriendo en `http://localhost:8001` con el endpoint `/metrics` expuesto.  
+- Prometheus instalado localmente.
+
+---
+
+### Pasos para ejecutar
+
+1. **Arrancar la API de sedes**  
+   ```bash
+   uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
+
+2. **Iniciar Prometheus**
+  ```bash
+  prometheus --config.file=deployment/prometheus/prometheus.yml
+  ```
+
+
+3. Abrir la interfaz de Prometheus
+
+Targets
+Visita: http://localhost:9090/targets
+Deberías ver dos jobs UP:
+
+prometheus
+
+sedes_service
+
+Gráficas
+Visita: http://localhost:9090/graph
+Y prueba estas queries:
+
+    ```bash
+    http_requests_total_sedes_total
+    rate(http_requests_total_sedes_total[1m])
+    rate(http_request_duration_seconds_sedes_sum[1m]) 
+    / rate(http_request_duration_seconds_sedes_count[1m])
+    increase(http_request_errors_total_sedes_total[1m])
+
+
+
+![Métricas expuestas](assets/images/POSTMANMETRICS1.png)
+![Métricas expuestas](assets/images/POSTMANMETRICS2.png)
+![Targets UP](assets/images/peticionesxendpoint.png)
+![Gráfico de latencia](assets/images/latenciamedia.png)
+![Tasa de peticiones](assets/images/tasadepeticiones.png)
+![Terminal](assets/images/terminal.png)
 
 ## Pruebas
+````markdown
+## 🧪 Pruebas unitarias
 
-Ejecuta las pruebas unitarias con pytest:
+### Requisitos
+- Python 3.x y entorno virtual activado.
+- Dependencias instaladas:
+  ```bash
+  pip install -r requirements.txt
+````
+
+### Estructura
+
+```
+app/
+└─ test/
+   ├─ __init__.py
+   ├─ test_sede.py
+   └─ test_profesor_sede.py
+```
+
+### Cómo ejecutar
+
+Desde la raíz del proyecto:
 
 ```bash
-pytest app/test/test_sedes.py
+pytest --maxfail=1 -q
 ```
+
+### Qué validan
+
+* **`test_sede.py`**
+
+  * CRUD completo de sedes (POST, GET, PUT, DELETE)
+  * Códigos HTTP esperados (200, 204, 404)
+  * Formato y contenido de la respuesta JSON
+* **`test_profesor_sede.py`**
+
+  * Asignación de profesor a sede y listado de sedes por profesor
+  * Mock de `auth_api` para simular siempre `200 OK` en la dependencia de autenticación
+* Fixtures de pytest que crean y destruyen una base de datos limpia antes y después de cada módulo
+* Pruebas independientes, sin llamadas a servicios externos reales
+
+
+
+
+
+
+
+
 
 ---
 
@@ -264,7 +356,7 @@ SECRET_KEY="TU_SECRET_KEY"
 DEBUG=True
 CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
 HOST="127.0.0.1"
-PORT=8001
+PORT=8000
 AUTH_API_URL="http://localhost:8000"
 ```
 
@@ -298,9 +390,14 @@ AUTH_API_URL="http://localhost:8000"
 3. Accede a la documentación interactiva en tu navegador:
 
    ```
-   http://127.0.0.1:8001/docs
+   http://127.0.0.1:8000/docs
    ```
 
 ```
+```
+
+CORRER PROYECTO 
+```Bash
+uvicorn app.main:app --reload --port 8000
 ```
 
