@@ -1,4 +1,7 @@
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field
+
 
 class Settings(BaseSettings):
     # Nueva forma de indicar el .env
@@ -7,12 +10,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     SECRET_KEY: str
     DEBUG: bool = False
-    CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
     HOST: str = "127.0.0.1"
     PORT: int = 8000
+    BASE_DATOS_DOCKER: str = Field(..., env="BASE_DATOS_DOCKER")
     
     # Agrega la URL base de tu auth_api (puede venir de .env)
-    AUTH_API_URL: str
+    AUTH_API_URL: str = Field(..., env="AUTH_API_URL")
     
 
 settings = Settings()

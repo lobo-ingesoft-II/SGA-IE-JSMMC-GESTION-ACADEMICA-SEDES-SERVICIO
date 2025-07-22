@@ -9,6 +9,11 @@ cryptography==45.0.3
 pycparser==2.22
 python-jose[cryptography]
 httpx>=0.24.0,<1
-
+pydantic-settings==2.1.0
+pydantic[email]
+prometheus_client
+pytest
+pytest-mock
+requests
 
 
